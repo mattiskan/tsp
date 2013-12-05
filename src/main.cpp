@@ -14,7 +14,12 @@ void printSolution(std::vector<Point*> & solution);
 
 int main(){
   read();
-  printPoints();
+
+  //printPoints();
+
+  std::vector<Point*> res = initialSolution(points);  
+
+  printSolution(res);
 }
 
 void read(){
@@ -27,7 +32,7 @@ void read(){
 
 void printPoints() {
   for(auto it = points.begin(); it!=points.end(); ++it)
-    printf("(%f, %f)\n", (*it)->x, (*it)->y);
+    printf("%d: (%f, %f)\n", (*it)->i, (*it)->x, (*it)->y);
 }
 
 void printSolution(std::vector<Point*> & solution) {
