@@ -1,7 +1,7 @@
 # Because i like it nice and tidy
 
 CC_FLAGS=-std=c++11 -g #-I $(wildcard lib/*)
-LD_FLAGS=-lboost_system
+LD_FLAGS=
 
 CPP_FILES := $(wildcard src/*.cpp)
 OBJ_FILES := $(patsubst src/%.cpp,bin/%.o,$(CPP_FILES))
