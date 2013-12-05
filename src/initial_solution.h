@@ -10,6 +10,8 @@ std::vector<Point*> initialSolution(Points points){
   Point * first = *points.begin();
   points.erase(points.begin());
   
+
+  
 }
 
 #endif

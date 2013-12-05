@@ -4,8 +4,9 @@
 
 struct Point {
   const float x,y;
-  
-  Point(float tx, float ty) : x(tx), y(ty) {}
+  const int i;
+
+  Point(float tx, float ty, int index) : x(tx), y(ty), i(index) {}
 
   int distanceTo(const Point &p) const{
     return round(sqrt(distanceSquared(p)));

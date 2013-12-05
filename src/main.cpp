@@ -18,8 +18,9 @@ int main(){
 
 void read(){
   float x,y;
+  int i(-1);
   while( scanf("%f %f", &x, &y) == 2){
-    points.insert( new Point(x,y) );
+    points.insert( new Point(x,y, ++i) );
   }
 }
 
