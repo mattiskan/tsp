@@ -4,6 +4,7 @@
 #include <math.h>
 #include <cstdio>
 #include <functional>
+#include <vector>
 
 struct Point {
   const float x,y;
@@ -16,6 +17,10 @@ struct Point {
 
   int distanceTo(const Point &p) const{
     return round(sqrt(distanceSquared(p)));
+  }
+
+  int distanceToNext(){
+    return distanceTo(*next);
   }
 	
 
@@ -31,6 +36,8 @@ struct PointDist {
     return dist < o.dist;
   }
 };
+
+typedef std::vector<std::vector<PointDist>> NearMatrix;
 
 //Hash:
 namespace std {
