@@ -16,7 +16,6 @@ void optimize(std::vector<Point*> & points, NearMatrix& matrix){
     for(int i=0; i<matrix.size(); ++i){
       if(findSwap(matrix, points[i]))
 	improving = true;
-      return;
     }
   }while(improving);
 
@@ -61,7 +60,6 @@ void reverseInterval(Point *from, Point *to){
     from = from->next;
   }
   to->reverse();
-  std::cout << "pass2" << std::endl;
 }
 
 
