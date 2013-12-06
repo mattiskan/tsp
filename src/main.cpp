@@ -4,6 +4,7 @@
 #include "point.cpp"
 #include <vector>
 #include "initial_solution.h"
+#include <algorithm>
 
 
 Points points;
@@ -11,6 +12,7 @@ Points points;
 void read();
 void printPoints();
 void printSolution(std::vector<Point*> & solution);
+std::vector<int> getNearestPoints(std::vector<Point*> points, int index) {
 
 int main(){
   read();
@@ -39,4 +41,17 @@ void printSolution(std::vector<Point*> & solution) {
   for (auto it=solution.begin(); it<solution.end(); ++it) {
     printf("%d\n", (*it)->i);
   }
+}
+
+std::vector<int> getNearestPoints(std::vector<Point*> points, int index) {
+  int useCount = std::min((int)points.size()-1, 20);
+  std::vector<float> allDistances;
+  Point * from = points[index];
+  for (int i=0; i<points.size(); i++) {
+    if (i==index) continue;
+    allDistances.push_back(from->distanceSquared(*points[i]));
+  }
+  std::vector<int> * shortestDists = new std::vector<int>(useCount);
+  std::partial_sort_copy (allDistances.begin(), allDistances.end(), shortestDists->begin(), shortestDists->end());
+  return *shortestDists;
 }
