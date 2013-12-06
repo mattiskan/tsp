@@ -9,17 +9,20 @@
 struct Point {
   const float x,y;
   const int i;
-  Point* next;
-  float nextDist;
+  bool changeDir;
+  Point *next, *prev;
+  float nextDist, prevDist;
 
-  Point(float tx, float ty, int index) : x(tx), y(ty), i(index) 
-  {}
+  Point(float tx, float ty, int index) : x(tx), y(ty), i(index), changeDir(false) {
+    next = nullptr;
+    prev = nullptr;
+  }
 
   int distanceTo(const Point &p) const{
     return round(sqrt(distanceSquared(p)));
   }
 
-  int distanceToNext(){
+  int distanceToNext() const{
     return distanceTo(*next);
   }
 	

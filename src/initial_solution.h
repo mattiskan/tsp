@@ -57,16 +57,19 @@ void initialSolution(std::vector<Point*> & points, NearMatrix & dists) {
     for (int j=0; j<dists.size()-1; j++) {
       PointDist & pd = dists[curr->i][j];
       if (used[pd.point->i]) continue;
-      used[j] = true;
+      used[pd.point->i] = true;
+      pd.point->prev = curr;
       curr->next = pd.point;
       curr->nextDist = pd.dist;
+      pd.point->prevDist = curr->nextDist;
       curr = pd.point;
       break;
     }
   }
   curr->next = &first;
+  first.prev = curr;
   curr->nextDist = round(curr->distanceTo(first));
-  
+  first.prevDist = curr->nextDist;
 }
 
 #endif

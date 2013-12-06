@@ -5,6 +5,7 @@
 #include <vector>
 #include "initial_solution.h"
 #include <algorithm>
+#include "2opt.h"
 
 std::vector<Point*> points;
 
@@ -29,6 +30,8 @@ int main(){
 
   initialSolution(points, nearMatr);  
 
+  optimize(points, nearMatr);
+
   printSolution(points);
 }
 
@@ -52,7 +55,7 @@ void printSolution(std::vector<Point*> & solution) {
     }*/
   Point * curr = solution[0];
   for (int i=0; i<solution.size(); ++i) {
-    printf("sol: %d\n", curr->i);
+    printf("sol: %d->%d\n", curr->i, curr->next->i);
     curr = curr->next;
   }
 }
@@ -64,7 +67,7 @@ NearMatrix neighbourMatrix(std::vector<Point*> & points) {
     for (auto to=points.begin(); to<points.end(); ++to) {
       if (*from == *to) {
       } else {
-	PointDist *pd = new PointDist({std::round((*from)->distanceTo(**to)), *to});
+	PointDist *pd = new PointDist({(int)std::round((*from)->distanceTo(**to)), *to});
 	row.push_back(*pd);
       }
     }
@@ -82,10 +85,10 @@ std::vector<int> getNearestPoints(std::vector<Point*> points, int index) {
     if (i==index) continue;
     allDistances.push_back(std::round(from->distanceTo(*points[i])));
   }
-  std::vector<int>  shortestDists = std::vector<int>(useCount);
+  std::vector<int> shortestDists = std::vector<int>(useCount);
   std::partial_sort_copy (allDistances.begin(), allDistances.end(), shortestDists.begin(), shortestDists.end());
   for (int i=0; i<shortestDists.size();i++) {
-
+    
   }
   return shortestDists;
 }
