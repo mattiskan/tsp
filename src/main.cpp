@@ -6,35 +6,35 @@
 #include "initial_solution.h"
 #include <algorithm>
 
-struct PointDist {
-  int dist;
-  Point * point;
-  bool operator< (const PointDist & o) const {
-    return dist < o.dist;
-  }
-};
-Points points;
+std::vector<Point*> points;
+
 
 void read();
 void printPoints();
 void printSolution(std::vector<Point*> & solution);
 std::vector<int> getNearestPoints(std::vector<Point*> points, int index);
-
+NearMatrix neighbourMatrix(std::vector<Point*> & points);
 int main(){
   read();
+  
+  NearMatrix nearMatr = neighbourMatrix(points);
+  /*for (int i=0; i<nearMatr.size(); i++) {
+
+    }*/
 
   //printPoints();
 
-  std::vector<Point*> res = initialSolution(points);  
+  initialSolution(points, nearMatr);  
 
-  printSolution(res);
+  printSolution(points);
 }
 
 void read(){
   float x,y;
   int i(-1);
   while( scanf("%f %f", &x, &y) == 2){
-    points.insert( new Point(x,y, ++i) );
+    //printf("%f %f\n", x, y);
+    points.push_back( new Point(x,y, ++i) );
   }
 }
 
@@ -44,13 +44,17 @@ void printPoints() {
 }
 
 void printSolution(std::vector<Point*> & solution) {
-  for (auto it=solution.begin(); it<solution.end(); ++it) {
+  /*for (auto it=solution.begin(); it<solution.end(); ++it) {
     printf("%d\n", (*it)->i);
+    }*/
+  Point * curr = solution[0];
+  for (int i=0; i<solution.size(); ++i) {
+    printf("sol: %d\n", *curr);
   }
 }
 
-std::vector<std::vector<PointDist>> neighbourMatrix(std::vector<Point*> & points) {
-  std::vector<std::vector<PointDist>> m;
+NearMatrix neighbourMatrix(std::vector<Point*> & points) {
+  NearMatrix m;
   for (auto from=points.begin(); from<points.end(); ++from) {
     std::vector<PointDist> row;
     for (auto to=points.begin(); to<points.end(); ++to) {
