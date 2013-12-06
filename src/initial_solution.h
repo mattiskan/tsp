@@ -61,6 +61,7 @@ void initialSolution(std::vector<Point*> & points, NearMatrix & dists) {
       curr->next = pd.point;
       curr->nextDist = pd.dist;
       curr = pd.point;
+      break;
     }
   }
   curr->next = &first;

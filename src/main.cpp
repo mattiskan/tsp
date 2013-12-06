@@ -18,9 +18,12 @@ int main(){
   read();
   
   NearMatrix nearMatr = neighbourMatrix(points);
-  /*for (int i=0; i<nearMatr.size(); i++) {
-
-    }*/
+  for (int i=0; i<nearMatr.size(); i++) {
+    for (int j=0; j<nearMatr[i].size(); j++) {
+      printf("(%d %d) ", nearMatr[i][j].dist, nearMatr[i][j].point->i);
+    }
+    printf("\n");
+  }
 
   //printPoints();
 
@@ -49,7 +52,8 @@ void printSolution(std::vector<Point*> & solution) {
     }*/
   Point * curr = solution[0];
   for (int i=0; i<solution.size(); ++i) {
-    printf("sol: %d\n", *curr);
+    printf("sol: %d\n", curr->i);
+    curr = curr->next;
   }
 }
 
