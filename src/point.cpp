@@ -1,3 +1,6 @@
+#ifndef POINT
+#define POINT
+
 #include <math.h>
 #include <cstdio>
 #include <functional>
@@ -21,7 +24,15 @@ struct Point {
   }
 };
 
+struct PointDist {
+  int dist;
+  Point * point;
+  bool operator< (const PointDist & o) const {
+    return dist < o.dist;
+  }
+};
 
+//Hash:
 namespace std {
   template<>
   struct hash<Point*> {
@@ -31,3 +42,5 @@ namespace std {
     }
   };
 }
+
+#endif
