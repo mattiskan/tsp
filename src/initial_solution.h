@@ -46,4 +46,18 @@ Point* pollNearest(Points &points, Point* ref){
   return nearest;
 }
 
+/*void initialSolution(std::vector<Point*> & points, std::vector<std::vector<int>> & dists) {
+  std::vector<bool> used(points.size());
+  used[0] = true;
+  int usedCount = 1;
+  for (int i=0; i<dists.size(); i++) {
+    for (int j=0; j<dists.size(); j++) {
+      
+      if (i==j || used[dist[i][j].second->i]) continue;
+      used[j
+    }
+  }
+
+  }*/
+
 #endif
