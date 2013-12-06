@@ -4,6 +4,7 @@
 #include <unordered_set>
 #include <vector>
 #include <limits.h>
+#include <math.h>
 
 typedef std::unordered_set<Point*, std::hash<Point*>> Points;
 
@@ -46,18 +47,25 @@ Point* pollNearest(Points &points, Point* ref){
   return nearest;
 }
 
-/*void initialSolution(std::vector<Point*> & points, std::vector<std::vector<int>> & dists) {
-  std::vector<bool> used(points.size());
+void initialSolution(std::vector<Point*> & points, NearMatrix & dists) {
+  std::vector<bool> used(points.size(), false);
   used[0] = true;
   int usedCount = 1;
-  for (int i=0; i<dists.size(); i++) {
-    for (int j=0; j<dists.size(); j++) {
-      
-      if (i==j || used[dist[i][j].second->i]) continue;
-      used[j
+  Point & first = *points[0];
+  Point * curr = &first;
+  for (int i=1; i<dists.size(); i++) {
+    for (int j=0; j<dists.size()-1; j++) {
+      PointDist & pd = dists[curr->i][j];
+      if (used[pd.point->i]) continue;
+      used[j] = true;
+      curr->next = pd.point;
+      curr->nextDist = pd.dist;
+      curr = pd.point;
     }
   }
-
-  }*/
+  curr->next = &first;
+  curr->nextDist = round(curr->distanceTo(first));
+  
+}
 
 #endif
