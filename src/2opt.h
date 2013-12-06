@@ -5,45 +5,63 @@
 #include "point.cpp"
 #include <iostream>
 
-void swap(Point*, Point*);
-int findSwap(NearMatrix&, Point*);
+void swap(Point&, Point&);
+bool findSwap(NearMatrix&, Point*);
+void reverseInterval(Point*, Point*);
 
-std::vector<Point> optimize(std::vector<Point*> & points, NearMatrix& matrix){
-  std::vector<Point> a;
-  int delta;
-
+void optimize(std::vector<Point*> & points, NearMatrix& matrix){
+  bool improving;
   do{
-    delta = 0;
+    improving = false;
     for(int i=0; i<matrix.size(); ++i){
-      delta -= findSwap(matrix, points[i]);
+      if(findSwap(matrix, points[i]))
+	improving = true;
+      return;
     }
-  }while(delta < 0);
-  return a;
+  }while(improving);
+
 }
 
-int findSwap(NearMatrix& matrix, Point *t1){
-  const Point *t2 = t1->next;//index för staden efter t1 just nu
+bool findSwap(NearMatrix& matrix, Point *t1){
+  Point *t2 = t1->next;//index för staden efter t1 just nu
+
   for(int i=0; i<matrix[t2->i].size(); ++i){ //iterera över städer nära t2
     Point *t3 = matrix[t2->i][i].point;
     Point *t4 = t3->next;
 
-    int preSwap = t1->distanceTo(*t2) + t3->distanceTo(*t4);
-    int postSwap = t1->distanceTo(*t4) + t2->distanceTo(*t3);
+    if(t1==t3)
+      continue;
+
+    int preSwap = t1->distanceTo(*t2) + t4->distanceTo(*t3);
+    int postSwap = t1->distanceTo(*t3) + t2->distanceTo(*t4);
     if( postSwap < preSwap ){
-      swap(t1, t3);
-      return postSwap - preSwap; // Improvement (as a positive value)
+      swap(*t1, *t3);
+      reverseInterval(t3, t2);
+      return true;
       }
   }
-  return 0;
+  return false;
 }
 
-void swap(Point *t1, Point *t3){
-  std::cout << "Swapping t" <<t1->i << ".next becomes t" << t3->next->i << std::endl;;
-  std::cout << "and t" <<t3->i << ".next becomes t" << t1->next->i << std::endl;;
+void swap(Point &t1, Point &t3){
+  //std::cout << "swapping " << t1.i << "->" << t1.next->i << " with " << t3.i<<"->"<<t3.next->i << std::endl;
+  Point *t2 = t1.next;
+  t2->prev = t3.next;//t2.next=t4
+  t3.next->prev = t2; //t4=t2
 
-  Point* tmp = t1->next;
-  t1->next = t3->next;
-  t3->next = tmp;
+  t1.next = &t3;
+  t3.next = &t1;
+}
+
+
+void reverseInterval(Point *from, Point *to){
+  //std::cout << "reversing from "<< from->i << " to " << to->i << std::endl;
+  while(from != to){
+    from->reverse();
+    from = from->next;
+  }
+  to->reverse();
+  std::cout << "pass2" << std::endl;
 }
 
 

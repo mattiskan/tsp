@@ -30,6 +30,12 @@ struct Point {
   float distanceSquared(const Point &p) const{
     return (x-p.x)*(x-p.x) + (y-p.y)*(y-p.y);
   }
+
+  void reverse(){
+    Point* tmp = next;
+    next = prev;
+    prev = tmp;
+  }
 };
 
 struct PointDist {

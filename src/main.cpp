@@ -30,7 +30,7 @@ int main(){
 
   initialSolution(points, nearMatr);  
 
-  optimize(points, nearMatr);
+  //optimize(points, nearMatr);
 
   printSolution(points);
 }
