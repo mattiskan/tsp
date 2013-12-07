@@ -12,6 +12,7 @@ std::vector<Point*> points;
 
 void read();
 void printPoints();
+int totalDist(std::vector<Point*> & points);
 void printSolution(std::vector<Point*> & solution);
 std::vector<int> getNearestPoints(std::vector<Point*> points, int index);
 NearMatrix neighbourMatrix(std::vector<Point*> & points);
@@ -28,9 +29,13 @@ int main(){
 
   //printPoints();
 
-  initialSolution(points, nearMatr);  
+  initialSolution(points, nearMatr); 
+  printf("Greedy dist: %d\n", &points);
+
+  
 
   optimize(points, nearMatr);
+  printf("2opt dist: %d\n", &points);
 
   printSolution(points);
 }
@@ -61,34 +66,32 @@ void printSolution(std::vector<Point*> & solution) {
 }
 
 NearMatrix neighbourMatrix(std::vector<Point*> & points) {
-  NearMatrix m;
-  for (auto from=points.begin(); from<points.end(); ++from) {
-    std::vector<PointDist> row;
-    for (auto to=points.begin(); to<points.end(); ++to) {
-      if (*from == *to) {
-      } else {
-	PointDist *pd = new PointDist({(int)std::round((*from)->distanceTo(**to)), *to});
-	row.push_back(*pd);
-      }
-    }
-    std::sort(row.begin(), row.end());
-    m.push_back(row);
+  printf("lalalastart\n");
+  NearMatrix m = NearMatrix(points.size());
+  for (int i=0; i<points.size(); ++i) {
+    m.push_back(std::vector<PointDist>(points.size()-1));
   }
+  printf("lalalamiddle\n");
+  for (int i=0; i<points.size(); ++i) {
+    Point * from = points[i];
+    for (int j=1+i; j<points.size(); ++j) {
+      Point * to = points[i];
+      int dist = (int)std::round(from->distanceTo(*to));
+      m[i].push_back(*(new PointDist({dist, to})));
+      m[j].push_back(*(new PointDist({dist, from})));
+    }
+    std::sort(m[i].begin(), m[i].end());
+  }
+  printf("lalalaend\n");
   return m;
 }
 
-std::vector<int> getNearestPoints(std::vector<Point*> points, int index) {
-  int useCount = std::min((int)points.size()-1, 20);
-  std::vector<int> allDistances;
-  Point * from = points[index];
-  for (int i=0; i<points.size(); i++) {
-    if (i==index) continue;
-    allDistances.push_back(std::round(from->distanceTo(*points[i])));
-  }
-  std::vector<int> shortestDists = std::vector<int>(useCount);
-  std::partial_sort_copy (allDistances.begin(), allDistances.end(), shortestDists.begin(), shortestDists.end());
-  for (int i=0; i<shortestDists.size();i++) {
-    
-  }
-  return shortestDists;
+
+int totalDist(std::vector<Point*> & points) {
+   Point * curr = points[0];
+   int total = 0;
+   for (int i=0; i<points.size(); ++i) {
+     total += round(curr->distanceTo(*curr->next));
+     curr = curr->next;
+   } 
 }
