@@ -1,21 +1,24 @@
 #include <stdio.h>
-#include <unordered_set>
 #include <functional>
-#include "point.cpp"
 #include <vector>
-#include "initial_solution.h"
 #include <algorithm>
-#include "2opt.h"
+#include "algorithms.h"
+#include "common.h"
+#include "point.h"
 
-std::vector<Point*> points;
-NearMatrix distances;
 
 void read();
 void printPoints();
 int totalDist(std::vector<Point*> & points);
 void printSolution(std::vector<Point*> & solution);
 std::vector<int> getNearestPoints(std::vector<Point*> points, int index);
+
+
 NearMatrix neighbourMatrix(std::vector<Point*> & points);
+NearMatrix distances;
+
+std::vector<Point*> points;
+
 int main(){
   read();
   

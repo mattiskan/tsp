@@ -1,9 +1,7 @@
-#ifndef TWO_OPT
-#define TWO_OPT
-
 #include <vector>
-#include "point.cpp"
 #include <iostream>
+#include "point.h"
+#include "common.h"
 
 void swap(Point&, Point&);
 bool findSwap(NearMatrix&, Point*);
@@ -21,11 +19,11 @@ void optimize(std::vector<Point*> & points, NearMatrix& matrix){
   }while(improving && ++end < 4000);
 }
 
-bool findSwap(NearMatrix& matrix, Point *t1){
+bool findSwap(NearMatrix& nearMat, Point *t1){
   Point *t2 = t1->next;//index för staden efter t1 just nu
 
-  for(int i=0; i<matrix[t2->i].size(); ++i){ //iterera över städer nära t2
-    Point *t3 = matrix[t2->i][i].point;
+  for(int i=1; i<nearMat[t2->i].size(); ++i){ //iterera över städer nära t2
+    Point *t3 = nearMat[t2->i][i].point;
     Point *t4 = t3->next;
 
     if(t1==t3)
@@ -61,6 +59,3 @@ void reverseInterval(Point *from, Point *to){
   }
   to->reverse();
 }
-
-
-#endif

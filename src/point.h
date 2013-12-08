@@ -11,7 +11,6 @@ struct Point {
   const int i;
   bool changeDir;
   Point *next, *prev;
-  float nextDist, prevDist;
 
   Point(float tx, float ty, int index) : x(tx), y(ty), i(index), changeDir(false) {
     next = nullptr;
@@ -22,10 +21,6 @@ struct Point {
     return round(sqrt(distanceSquared(p)));
   }
 
-  int distanceToNext() const{
-    return distanceTo(*next);
-  }
-	
 
   float distanceSquared(const Point &p) const{
     return (x-p.x)*(x-p.x) + (y-p.y)*(y-p.y);
@@ -47,8 +42,6 @@ struct PointDist {
   PointDist(int d, Point * p) : dist(d), point(p) { }
   PointDist() { }
 };
-
-typedef std::vector<std::vector<PointDist>> NearMatrix;
 
 //Hash:
 namespace std {
