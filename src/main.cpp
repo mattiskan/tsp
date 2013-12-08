@@ -6,7 +6,6 @@
 #include "common.h"
 #include "point.h"
 
-
 void read();
 void printPoints();
 int totalDist(std::vector<Point*> & points);
@@ -23,7 +22,7 @@ int main(){
   read();
   
   NearMatrix nearMatr = neighbourMatrix(points);
-  printf("%d %d", distances.size(), distances[0].size());
+  /*printf("%d %d", distances.size(), distances[0].size());
   for (int i=0; i<distances.size(); i++) {
     for (int j=0; j<distances[i].size(); j++) {
       printf("(%d %d) ", distances[i][j].dist, distances[i][j].point->i);
@@ -45,6 +44,7 @@ int main(){
 }
 
 void read(){
+  scanf("%*d");
   float x,y;
   int i(-1);
   while( scanf("%f %f", &x, &y) == 2){
