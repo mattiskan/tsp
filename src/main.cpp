@@ -32,7 +32,7 @@ int main(){
 
   //printPoints();
 
-  initialSolution(points, nearMatr); 
+  initialSolution(points, nearMatr, 0); 
   //  printf("Greedy dist: %d\n", &points);
 
   
