@@ -45,6 +45,7 @@ struct PointDist {
     return dist < o.dist;
   }
   PointDist(int d, Point * p) : dist(d), point(p) { }
+  PointDist() { }
 };
 
 typedef std::vector<std::vector<PointDist>> NearMatrix;

@@ -8,7 +8,7 @@
 #include "2opt.h"
 
 std::vector<Point*> points;
-
+NearMatrix distances;
 
 void read();
 void printPoints();
@@ -20,10 +20,10 @@ int main(){
   read();
   
   NearMatrix nearMatr = neighbourMatrix(points);
-  /*printf("%d %d", nearMatr.size(), nearMatr[0].size());
-  for (int i=0; i<nearMatr.size(); i++) {
-    for (int j=0; j<nearMatr[i].size(); j++) {
-      printf("(%d %d) ", nearMatr[i][j].dist, nearMatr[i][j].point->i);
+  printf("%d %d", distances.size(), distances[0].size());
+  for (int i=0; i<distances.size(); i++) {
+    for (int j=0; j<distances[i].size(); j++) {
+      printf("(%d %d) ", distances[i][j].dist, distances[i][j].point->i);
     }
     printf("\n");
   }//*/
@@ -60,7 +60,7 @@ void printSolution(std::vector<Point*> & solution) {
     printf("%d\n", (*it)->i);
     }*/
   Point * curr = solution[0];
-  for (int i=0; i<solution.size(); ++i) {
+  for (int i=0; i<(int)solution.size(); ++i) {
     printf("%d\n", curr->i);
     curr = curr->next;
   }
@@ -68,20 +68,24 @@ void printSolution(std::vector<Point*> & solution) {
 
 NearMatrix neighbourMatrix(std::vector<Point*> & points) {
   //printf("lalalastart %d\n", points.size());
-  NearMatrix m = NearMatrix(points.size(), std::vector<PointDist>());
-  for (int i=0; i<points.size(); ++i) {
+  NearMatrix m = NearMatrix(points.size(), std::vector<PointDist>(points.size()));
+  /*for (int i=0; i<(int)points.size(); ++i) {
     m[i].reserve(points.size()-1);
-  }
+    }*/
   
   //printf("lalalamiddle %d\n", m.size());
-  for (int i=0; i<points.size(); ++i) {
+  for (int i=0; i<(int)points.size(); ++i) {
     Point * from = points[i];
-    for (int j=1+i; j<points.size(); ++j) {
+    m[i][i] = PointDist(0, from);
+    for (int j=1+i; j<(int)points.size(); ++j) {
       Point * to = points[j];
       int dist = (int)std::round(from->distanceTo(*to));
-      m[i].emplace_back(dist, to);
-      m[j].emplace_back(dist, from);
+      m[i][j] = PointDist(dist, to);
+      m[j][i] = PointDist(dist, from);
     }
+  }
+  distances = m;
+  for (int i=0; i<(int)points.size(); ++i) {
     std::sort(m[i].begin(), m[i].end());
   }
   //printf("lalalaend %d %d\n", m.size(), m[0].size());
@@ -92,8 +96,9 @@ NearMatrix neighbourMatrix(std::vector<Point*> & points) {
 int totalDist(std::vector<Point*> & points) {
    Point * curr = points[0];
    int total = 0;
-   for (int i=0; i<points.size(); ++i) {
+   for (int i=0; i<(int)points.size(); ++i) {
      total += round(curr->distanceTo(*curr->next));
      curr = curr->next;
    } 
+   return total;
 }
