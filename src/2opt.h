@@ -10,6 +10,7 @@ bool findSwap(NearMatrix&, Point*);
 void reverseInterval(Point*, Point*);
 
 void optimize(std::vector<Point*> & points, NearMatrix& matrix){
+  int end = 0;
   bool improving;
   do{
     improving = false;
@@ -17,8 +18,7 @@ void optimize(std::vector<Point*> & points, NearMatrix& matrix){
       if(findSwap(matrix, points[i]))
 	improving = true;
     }
-  }while(improving);
-
+  }while(improving && ++end < 4000);
 }
 
 bool findSwap(NearMatrix& matrix, Point *t1){
@@ -31,13 +31,13 @@ bool findSwap(NearMatrix& matrix, Point *t1){
     if(t1==t3)
       continue;
 
-    int preSwap = t1->distanceTo(*t2) + t4->distanceTo(*t3);
+    int preSwap = t1->distanceTo(*t2) + t3->distanceTo(*t4);
     int postSwap = t1->distanceTo(*t3) + t2->distanceTo(*t4);
     if( postSwap < preSwap ){
       swap(*t1, *t3);
       reverseInterval(t3, t2);
       return true;
-      }
+    }
   }
   return false;
 }
