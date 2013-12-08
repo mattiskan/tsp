@@ -20,22 +20,23 @@ int main(){
   read();
   
   NearMatrix nearMatr = neighbourMatrix(points);
-  /*for (int i=0; i<nearMatr.size(); i++) {
+  /*printf("%d %d", nearMatr.size(), nearMatr[0].size());
+  for (int i=0; i<nearMatr.size(); i++) {
     for (int j=0; j<nearMatr[i].size(); j++) {
       printf("(%d %d) ", nearMatr[i][j].dist, nearMatr[i][j].point->i);
     }
     printf("\n");
-  }*/
+  }//*/
 
   //printPoints();
 
   initialSolution(points, nearMatr); 
-  printf("Greedy dist: %d\n", &points);
+  //  printf("Greedy dist: %d\n", &points);
 
   
 
   optimize(points, nearMatr);
-  printf("2opt dist: %d\n", &points);
+  //printf("2opt dist: %d\n", &points);
 
   printSolution(points);
 }
@@ -66,23 +67,24 @@ void printSolution(std::vector<Point*> & solution) {
 }
 
 NearMatrix neighbourMatrix(std::vector<Point*> & points) {
-  printf("lalalastart\n");
-  NearMatrix m = NearMatrix(points.size());
+  //printf("lalalastart %d\n", points.size());
+  NearMatrix m = NearMatrix(points.size(), std::vector<PointDist>());
   for (int i=0; i<points.size(); ++i) {
-    m.push_back(std::vector<PointDist>(points.size()-1));
+    m[i].reserve(points.size()-1);
   }
-  printf("lalalamiddle\n");
+  
+  //printf("lalalamiddle %d\n", m.size());
   for (int i=0; i<points.size(); ++i) {
     Point * from = points[i];
     for (int j=1+i; j<points.size(); ++j) {
-      Point * to = points[i];
+      Point * to = points[j];
       int dist = (int)std::round(from->distanceTo(*to));
-      m[i].push_back(*(new PointDist({dist, to})));
-      m[j].push_back(*(new PointDist({dist, from})));
+      m[i].emplace_back(dist, to);
+      m[j].emplace_back(dist, from);
     }
     std::sort(m[i].begin(), m[i].end());
   }
-  printf("lalalaend\n");
+  //printf("lalalaend %d %d\n", m.size(), m[0].size());
   return m;
 }
 
