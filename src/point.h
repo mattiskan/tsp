@@ -17,10 +17,12 @@ struct Point {
     prev = nullptr;
   }
 
-  int distanceTo(const Point &p) const{
+  int distanceTo(const Point &p) const;
+
+
+  int calcDistanceTo(const Point &p) const{
     return round(sqrt(distanceSquared(p)));
   }
-
 
   float distanceSquared(const Point &p) const{
     return (x-p.x)*(x-p.x) + (y-p.y)*(y-p.y);

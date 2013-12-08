@@ -69,6 +69,11 @@ void printSolution(std::vector<Point*> & solution) {
   }
 }
 
+int Point::distanceTo(const Point &p) const{
+  return distances[this->i][p.i].dist;
+}
+
+
 NearMatrix neighbourMatrix(std::vector<Point*> & points) {
   //printf("lalalastart %d\n", points.size());
   NearMatrix m = NearMatrix(points.size(), std::vector<PointDist>(points.size()));
@@ -82,7 +87,7 @@ NearMatrix neighbourMatrix(std::vector<Point*> & points) {
     m[i][i] = PointDist(0, from);
     for (int j=1+i; j<(int)points.size(); ++j) {
       Point * to = points[j];
-      int dist = (int)std::round(from->distanceTo(*to));
+      int dist = (int)std::round(from->calcDistanceTo(*to));
       m[i][j] = PointDist(dist, to);
       m[j][i] = PointDist(dist, from);
     }
@@ -100,7 +105,7 @@ int totalDist(std::vector<Point*> & points) {
    Point * curr = points[0];
    int total = 0;
    for (int i=0; i<(int)points.size(); ++i) {
-     total += round(curr->distanceTo(*curr->next));
+     total += curr->distanceTo(*curr->next);
      curr = curr->next;
    } 
    return total;
