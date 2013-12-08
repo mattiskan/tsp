@@ -2,6 +2,9 @@
 #include <functional>
 #include <vector>
 #include <algorithm>
+#include <string>
+#include <climits>
+#include <sstream>
 #include "algorithms.h"
 #include "common.h"
 #include "point.h"
@@ -9,7 +12,7 @@
 void read();
 void printPoints();
 int totalDist(std::vector<Point*> & points);
-void printSolution(std::vector<Point*> & solution);
+std::string getSolution(std::vector<Point*> & solution);
 std::vector<int> getNearestPoints(std::vector<Point*> points, int index);
 
 
@@ -19,6 +22,7 @@ NearMatrix distances;
 std::vector<Point*> points;
 
 int main(){
+
   read();
   
   NearMatrix nearMatr = neighbourMatrix(points);
@@ -32,15 +36,22 @@ int main(){
 
   //printPoints();
 
-  initialSolution(points, nearMatr, 0); 
-  //  printf("Greedy dist: %d\n", &points);
 
   
+  int bestVal(INT_MAX);
+  std::string bestSol;
+  for(int i(0); i < 3; ++i) {
+    initialSolution(points, nearMatr, i*250 % ((int)points.size())); 
+    int initVal = totalDist(points);
+    int thisImprovement = optimize(points, nearMatr);
+    if(initVal - thisImprovement < bestVal){
+      bestSol = getSolution(points);
+      bestVal = initVal - thisImprovement;
+    }
+  }
 
-  optimize(points, nearMatr);
-  //printf("2opt dist: %d\n", &points);
-
-  printSolution(points);
+  
+  printf("%s", bestSol.c_str());
 }
 
 void read(){
@@ -58,15 +69,18 @@ void printPoints() {
     printf("%d: (%f, %f)\n", (*it)->i, (*it)->x, (*it)->y);
 }
 
-void printSolution(std::vector<Point*> & solution) {
+std::string getSolution(std::vector<Point*> & solution) {
+  std::stringstream sol;
   /*for (auto it=solution.begin(); it<solution.end(); ++it) {
     printf("%d\n", (*it)->i);
     }*/
   Point * curr = solution[0];
   for (int i=0; i<(int)solution.size(); ++i) {
-    printf("%d\n", curr->i);
+    sol << curr->i << "\n";
+    //printf("%d\n", curr->i);
     curr = curr->next;
   }
+  return sol.str();
 }
 
 int Point::distanceTo(const Point &p) const{

@@ -4,22 +4,26 @@
 #include "common.h"
 
 void swap(Point&, Point&);
-bool findSwap(NearMatrix&, Point*);
+int findSwap(NearMatrix&, Point*);
 void reverseInterval(Point*, Point*);
 
-void optimize(std::vector<Point*> & points, NearMatrix& matrix){
-  int end = 0;
+int optimize(std::vector<Point*> & points, NearMatrix& matrix){
+  int end(0);
+  int totalDiff(0);
   bool improving;
   do{
     improving = false;
     for(int i=0; i<(int)matrix.size(); ++i){
-      if(findSwap(matrix, points[i]))
+      int thisDiff = findSwap(matrix, points[i]);
+      if(thisDiff != 0)
 	improving = true;
+      totalDiff += thisDiff;
     }
-  }while(improving && ++end < 4000);
+  }while(improving && ++end < 5);
+  return totalDiff;;
 }
 
-bool findSwap(NearMatrix& nearMat, Point *t1){
+int findSwap(NearMatrix& nearMat, Point *t1){
   Point *t2 = t1->next;//index för staden efter t1 just nu
 
   for(int i=1; i<(int)nearMat[t2->i].size(); ++i){ //iterera över städer nära t2
@@ -34,7 +38,7 @@ bool findSwap(NearMatrix& nearMat, Point *t1){
     if( postSwap < preSwap ){
       swap(*t1, *t3);
       reverseInterval(t3, t2);
-      return true;
+      return preSwap - postSwap;
     }
   }
   return false;
